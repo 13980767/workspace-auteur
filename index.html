@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Diagnostic Manuscrit · Démo pour Auteurs & Chroniqueurs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --ac-dark: #7A0B0B;      /* Bourgogne sombre */
+      --ac-gold: #D4AF37;      /* Or chaud */
+      --ac-light: #faf7f2;     /* Ivoire / crème */
+      --bg: #f4eee6;
+      --bg-card: #ffffff;
+      --text: #2b2b2b;
+      --muted: #6b6b6b;
+      --border: #ded3c6;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 14px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #fdf7f0 0, #f4eee6 50%, #f4eee6 100%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--ac-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .page {
+        padding: 2.5rem 0 3.5rem;
+      }
+    }
+
+    /* Hero / En-tête */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr);
+      gap: 1.5rem;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+        gap: 2.25rem;
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.8rem;
+      border-radius: var(--radius-pill);
+      background: var(--ac-dark);
+      color: var(--ac-gold);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--ac-gold);
+    }
+
+    .hero-title {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 1.9rem;
+      margin: 0.6rem 0 0.3rem;
+      color: var(--ac-dark);
+      letter-spacing: 0.01em;
+    }
+
+    .hero-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      max-width: 32rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 1.1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      padding: 0.6rem 1.3rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: transform 80ms ease-out, box-shadow 140ms ease, background-color 140ms ease;
+    }
+
+    .btn-primary {
+      background: var(--ac-dark);
+      color: var(--ac-gold);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+    }
+
+    .btn-secondary {
+      background: #efe1d1;
+      color: #3f2d2b;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn span.icon {
+      font-size: 1.15rem;
+      translate: 0 0.5px;
+    }
+
+    .hero-sidecard {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.2rem;
+      border: 1px solid rgba(210, 185, 140, 0.8);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-side-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #7a5a34;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-side-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0.3rem 0 0;
+      font-size: 0.82rem;
+      color: #4b3b33;
+    }
+
+    .hero-side-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.35rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .hero-side-list li span.bullet {
+      font-size: 0.8rem;
+      color: var(--ac-dark);
+      margin-top: 0.05rem;
+    }
+
+    /* Sections génériques */
+    .section {
+      margin-bottom: 2.2rem;
+    }
+
+    .section-header {
+      margin-bottom: 0.7rem;
+    }
+
+    .section-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      color: #8b7354;
+      margin-bottom: 0.15rem;
+    }
+
+    .section-title {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 1.2rem;
+      margin: 0;
+      color: var(--ac-dark);
+    }
+
+    .section-intro {
+      margin: 0.3rem 0 0.6rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 40rem;
+    }
+
+    /* Grille bénéfices */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 800px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      padding: 1rem 1.05rem 1.1rem;
+    }
+
+    .card h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.98rem;
+      color: var(--ac-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: "Georgia", "Times New Roman", serif;
+    }
+
+    .card h3 span.icon {
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0.45rem 0 0;
+      font-size: 0.86rem;
+      color: #4a4136;
+    }
+
+    .bullet-list li {
+      padding-left: 0.95rem;
+      position: relative;
+      margin-bottom: 0.18rem;
+    }
+
+    .bullet-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: -0.02rem;
+      color: #a7702f;
+      font-size: 0.9rem;
+    }
+
+    /* Bloc “comment ça marche” */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+      font-size: 0.86rem;
+    }
+
+    @media (min-width: 650px) {
+      .steps {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .step {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 14px;
+      border: 1px dashed rgba(188, 163, 133, 0.9);
+      padding: 0.7rem 0.75rem 0.8rem;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #8b7354;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: #3f2d2b;
+    }
+
+    /* Aperçu de l’outil (iframe) */
+    .preview-card {
+      background: #1b1512;
+      border-radius: var(--radius-lg);
+      padding: 0.9rem 0.95rem 1.1rem;
+      border: 1px solid #3c2a21;
+      box-shadow: var(--shadow-md);
+      color: #f6e7d5;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .preview-title {
+      font-size: 0.92rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #f6e7d5;
+    }
+
+    .preview-dot-row {
+      display: inline-flex;
+      gap: 0.35rem;
+    }
+
+    .preview-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #fcbf49;
+      opacity: 0.8;
+    }
+
+    .preview-dot:nth-child(2) {
+      background: #f77f00;
+    }
+
+    .preview-dot:nth-child(3) {
+      background: #d62828;
+    }
+
+    .preview-subtitle {
+      font-size: 0.8rem;
+      color: #e6c197;
+      margin-bottom: 0.6rem;
+    }
+
+    .preview-frame-wrapper {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #3f2b1f;
+      background: #100c0a;
+    }
+
+    .preview-frame {
+      display: block;
+      width: 100%;
+      height: 540px;
+      border: none;
+      background: #100c0a;
+    }
+
+    @media (max-width: 600px) {
+      .preview-frame {
+        height: 420px;
+      }
+    }
+
+    .preview-note {
+      margin-top: 0.45rem;
+      font-size: 0.78rem;
+      color: #e0c7a3;
+    }
+
+    /* Bas de page / CTA éditeur */
+    .cta-card {
+      background: #231814;
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.1rem 1.2rem;
+      color: #f3e1c5;
+      box-shadow: var(--shadow-md);
+      border: 1px solid #3c281f;
+    }
+
+    .cta-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr);
+      gap: 0.9rem;
+      align-items: center;
+    }
+
+    @media (min-width: 800px) {
+      .cta-row {
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+      }
+    }
+
+    .cta-title {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 1.2rem;
+      margin: 0 0 0.25rem;
+    }
+
+    .cta-text {
+      font-size: 0.9rem;
+      margin: 0 0 0.7rem;
+      color: #f7e9d7;
+    }
+
+    .cta-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      font-size: 0.83rem;
+    }
+
+    .cta-list li {
+      padding-left: 1.1rem;
+      position: relative;
+      margin-bottom: 0.2rem;
+    }
+
+    .cta-list li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #fcbf49;
+      font-size: 0.9rem;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+
+    .cta-actions small {
+      font-size: 0.75rem;
+      color: #f1d7b2;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+<div class="page">
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Démo outil pour Auteurs & Chroniqueurs
+      </div>
+      <h1 class="hero-title">Diagnostic Manuscrit / Maison d’Édition</h1>
+      <p class="hero-subtitle">
+        Un outil interactif pour aider les auteurs à vérifier, en quelques minutes, si leur manuscrit est en phase
+        avec la ligne éditoriale d’une maison d’édition — et à mieux préparer leur soumission.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#preview" class="btn btn-primary">
+          <span class="icon">▶</span>
+          Voir l’outil en action
+        </a>
+        <a href="#benefices" class="btn btn-secondary">
+          <span class="icon">⭐</span>
+          Bénéfices pour Auteurs & Chroniqueurs
+        </a>
+      </div>
+    </div>
+
+    <aside class="hero-sidecard">
+      <div class="hero-side-title">Pensé pour les auteurs… et les éditeurs</div>
+      <ul class="hero-side-list">
+        <li>
+          <span class="bullet">✦</span>
+          <span>Filtres les maisons inadaptées avant l’envoi.</span>
+        </li>
+        <li>
+          <span class="bullet">✦</span>
+          <span>Met en valeur les convergences (genre, public, thématiques, format).</span>
+        </li>
+        <li>
+          <span class="bullet">✦</span>
+          <span>Fournit des recommandations concrètes pour la lettre de soumission.</span>
+        </li>
+        <li>
+          <span class="bullet">✦</span>
+          <span>Outil autonome : fonctionne en HTML/CSS/JS, sans maintenance technique.</span>
+        </li>
+      </ul>
+    </aside>
+  </header>
+
+  <!-- BÉNÉFICES -->
+  <section id="benefices" class="section">
+    <div class="section-header">
+      <div class="section-kicker">Double bénéfice</div>
+      <h2 class="section-title">Un gain de temps pour les auteurs… et pour les maisons d’édition</h2>
+      <p class="section-intro">
+        L’outil s’intègre comme une simple page sur Auteurs & Chroniqueurs, mais fournit une vraie valeur ajoutée :
+        des manuscrits mieux ciblés, des dossiers plus propres, et des auteurs mieux accompagnés.
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <article class="card">
+        <h3><span class="icon">🖊️</span> Pour les auteurs</h3>
+        <p>
+          L’auteur ne “tire plus au hasard” : il sait en quelques minutes s’il a une vraie chance avec une maison donnée.
+        </p>
+        <ul class="bullet-list">
+          <li>Identification rapide des convergences (genre, public, longueur, thématiques).</li>
+          <li>Réduction des envois inutiles et de la frustration associée.</li>
+          <li>Aide à structurer la lettre, le pitch et le synopsis.</li>
+          <li>Suivi simple des maisons déjà analysées ou contactées (local, dans le navigateur).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3><span class="icon">🏛️</span> Pour les maisons d’édition</h3>
+        <p>
+          Les éditeurs reçoivent trop de manuscrits hors-ligne. Cet outil encourage des soumissions mieux ciblées.
+        </p>
+        <ul class="bullet-list">
+          <li>Moins de manuscrits totalement incompatibles.</li>
+          <li>Dossiers plus lisibles (pitch clair, longueur annoncée, public défini).</li>
+          <li>Respect renforcé des consignes de soumission.</li>
+          <li>Image d’auteurs plus profesionnels, mieux préparés.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-kicker">Fonctionnement</div>
+      <h2 class="section-title">Comment fonctionne l’outil&nbsp;?</h2>
+      <p class="section-intro">
+        L’interface est pensée pour rester simple côté auteur, tout en intégrant une logique d’analyse éditoriale :
+        manuscrit d’un côté, maison d’édition de l’autre, et un diagnostic dynamique au centre.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-label">Étape 1</div>
+        <div class="step-title">L’auteur décrit son manuscrit</div>
+        <p>
+          Genre, sous-genre, thématiques, public visé, tonalité, longueur, format, titres comparables… Autant
+          d’éléments que l’auteur crédibilise et clarifie pour lui-même.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-label">Étape 2</div>
+        <div class="step-title">Il entre la ligne éditoriale de la maison</div>
+        <p>
+          Genres acceptés / refusés, collections, formats, plages de longueur, thématiques privilégiées, thématiques
+          sensibles, contraintes de soumission.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-label">Étape 3</div>
+        <div class="step-title">L’outil génère un diagnostic</div>
+        <p>
+          Score de compatibilité, liste de convergences, points de friction potentiels, questions à éclaircir et
+          recommandations pour la lettre de soumission.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- APERÇU INTERACTIF -->
+  <section id="preview" class="section">
+    <div class="section-header">
+      <div class="section-kicker">Démonstration</div>
+      <h2 class="section-title">Aperçu interactif intégré dans une page</h2>
+      <p class="section-intro">
+        Ci-dessous, l’outil tel qu’il pourrait apparaître dans une section dédiée sur Auteurs & Chroniqueurs.
+        Il s’intègre simplement via une balise <code>&lt;iframe&gt;</code> pointant vers la page HTML autonome.
+      </p>
+    </div>
+
+    <article class="preview-card">
+      <div class="preview-header">
+        <div class="preview-title">Diagnostic manuscrit / maison d’édition</div>
+        <div class="preview-dot-row">
+          <span class="preview-dot"></span>
+          <span class="preview-dot"></span>
+          <span class="preview-dot"></span>
+        </div>
+      </div>
+      <p class="preview-subtitle">
+        Ceci est un exemple d’intégration de l’outil.
+      </p>
+
+      <div class="preview-frame-wrapper">
+        <!-- 🔁 IMPORTANT : remplacez l’URL ci-dessous par l’adresse réelle de l’outil -->
+        <iframe
+          class="preview-frame"
+          src="https://drive.google.com/file/d/1sD8qyUccjZ4NaOYxBmP2_pb9_DVBG_lJ/view?usp=sharing"
+          title="Démo outil Diagnostic Manuscrit">
+        </iframe>
+      </div>
+
+      <p class="preview-note">
+        Les données saisies restent stockées localement dans le navigateur de l’utilisateur (localStorage).
+        Aucun serveur n’est sollicité : ni Auteurs &amp; Chroniqueurs, ni l’auteur du site ne reçoivent de données.
+      </p>
+    </article>
+  </section>
+
+  <!-- CTA / PROPOSITION POUR AUTEURS & CHRONIQUEURS -->
+  <section class="section">
+    <article class="cta-card">
+      <div class="cta-row">
+        <div>
+          <h2 class="cta-title">Proposition d’intégration pour Auteurs &amp; Chroniqueurs</h2>
+          <p class="cta-text">
+            L’outil peut être mis à disposition des auteurs directement sur le site Auteurs &amp; Chroniqueurs,
+            sous forme de page “Outil de diagnostic manuscrit / maison d’édition”.
+          </p>
+          <ul class="cta-list">
+            <li>Intégration simple par iframe dans une page dédiée du site.</li>
+            <li>Outil 100&nbsp;% autonome (HTML/CSS/JS), sans maintenance serveur.</li>
+            <li>Adaptable graphiquement pour rester cohérent avec la charte existante.</li>
+            <li>Possibilité de mention “Outil créé par XM (www.xaviermayot.com)”.</li>
+          </ul>
+        </div>
+        <div class="cta-actions">
+          <button class="btn btn-primary" type="button">
+            <span class="icon">✉️</span>
+            Discuter d’un partenariat
+          </button>
+          <small>
+            Contact : Xavier Mayot — Auteur & créateur de l’outil Diagnostic Manuscrit / Éditeur.
+          </small>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <footer class="footer">
+    © 2025 XM — Page de démonstration du template “Diagnostic Manuscrit / Maison d’Édition” ·
+    Version spéciale pour présentation à Auteurs &amp; Chroniqueurs.
+  </footer>
+</div>
+</body>
+</html>
